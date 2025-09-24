@@ -3,7 +3,7 @@ from playwright.sync_api import Page, expect
 
 
 def test_example(page: Page) -> None:
-    # Тест калькулятора стоимости на сайте cartaxi.io
+    # Автотест калькулятора
     page.goto("https://cartaxi.io/")
     page.get_by_role("navigation").get_by_text("Услуги").click()
     page.get_by_role("link", name="Калькулятор").click()
