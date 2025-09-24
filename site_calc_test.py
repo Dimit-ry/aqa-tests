@@ -22,3 +22,12 @@ def test_example(page: Page) -> None:
     page.locator(".counter-inc").click()
     page.locator(".counter-inc").click()
     page.locator(".counter-inc").click()
+
+def test_empty_fields_validation(page: Page) -> None:
+    page.goto("https://cartaxi.io/")
+    page.get_by_role("navigation").get_by_text("Услуги").click()
+    page.get_by_role("link", name="Калькулятор").click()
+    page.get_by_role("link", name="Рассчитать стоимость").click()
+    
+    #Пробую отправить пустую форму
+    page.get_by_role("button", name="Подтвердить").click()
