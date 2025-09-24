@@ -6,8 +6,11 @@ from playwright.sync_api import Browser, Page, sync_playwright
 def browser():
     """Создает headless Chrome браузер для всех тестов"""
     with sync_playwright() as playwright:
-        # Запускаем браузер в headless режиме (без окна)
-        browser = playwright.chromium.launch(headless=True)
+        # Запускаем браузер в headless режиме с дополнительными флагами для CI
+        browser = playwright.chromium.launch(
+            headless=True,
+            args=['--no-sandbox', '--disable-dev-shm-usage']  # Для стабильности в CI
+        )
         yield browser
         browser.close()
 

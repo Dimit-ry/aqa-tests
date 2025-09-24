@@ -10,6 +10,8 @@ def test_example(page: Page) -> None:
     page.get_by_role("link", name="Рассчитать стоимость").click()
     page.locator("input[type=\"text\"]").nth(1).click()
     page.locator("input[type=\"text\"]").nth(1).fill("Пролетарская спб")
+    # Ждем появления кнопки очистки и кликаем
+    page.locator(".form-item__right-clear-btn").wait_for(state="visible", timeout=10000)
     page.locator(".form-item__right-clear-btn").click()
     page.locator("input[type=\"text\"]").nth(1).fill("Пролетарская")
     page.get_by_text("метро Пролетарская, Таганско-Краснопресненская линия, Москва").click()
