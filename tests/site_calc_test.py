@@ -10,9 +10,18 @@ def test_example(page: Page) -> None:
     page.get_by_role("link", name="Рассчитать стоимость").click()
     page.locator("input[type=\"text\"]").nth(1).click()
     page.locator("input[type=\"text\"]").nth(1).fill("Пролетарская спб")
-    # Ждем появления кнопки очистки и кликаем
-    page.locator(".form-item__right-clear-btn").wait_for(state="visible", timeout=10000)
-    page.locator(".form-item__right-clear-btn").click()
+    
+    # Пробуем найти кнопку очистки, если есть - кликаем, если нет - очищаем через keyboard
+    try:
+        clear_button = page.locator(".form-item__right-clear-btn")
+        clear_button.wait_for(state="visible", timeout=3000)
+        clear_button.click()
+    except:
+        # Если кнопки нет, очищаем поле через клавиатуру (Ctrl+A + Delete)
+        page.locator("input[type=\"text\"]").nth(1).click()
+        page.keyboard.press("Control+a")
+        page.keyboard.press("Delete")
+    
     page.locator("input[type=\"text\"]").nth(1).fill("Пролетарская")
     page.get_by_text("метро Пролетарская, Таганско-Краснопресненская линия, Москва").click()
     page.locator("input[type=\"text\"]").nth(2).click()
