@@ -21,3 +21,24 @@ def page(browser: Browser):
     page = browser.new_page()
     yield page
     page.close()
+
+
+@pytest.fixture(scope="session")
+def browser_headed():
+    """Создает видимый Chrome браузер для локальной отладки"""
+    with sync_playwright() as playwright:
+        # Запускаем браузер с видимым окном
+        browser = playwright.chromium.launch(
+            headless=False,  # Видимый режим
+            slow_mo=500      # Замедление для лучшей видимости действий
+        )
+        yield browser
+        browser.close()
+
+
+@pytest.fixture
+def page_headed(browser_headed: Browser):
+    """Создает новую страницу в видимом браузере"""
+    page = browser_headed.new_page()
+    yield page
+    page.close()
